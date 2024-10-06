@@ -11,3 +11,5 @@ Your submissions will be evaluated on the following criteria:
 
 1. Accuracy and Relevance: How well the recommendation engine can match accelerators to the needs of existing customers
 2. Predictive Capability: The engine’s ability to efficiently recommend accelerators to new customers with minimal historical data.
+
+3. Down the FInal Project here : https://drive.google.com/file/d/1X3dPF5toXaq30o8Z8jqRG-8jA-97NiVU/view?usp=sharing
