@@ -1,5 +1,8 @@
 ## ServiceNow: Accelerator Recommendation Engine (sn_sys_are)
 
+1. https://github.com/dev-philip/Accelerator-Recommendation-Engine
+2. https://github.com/dev-philip/Recommendation-Engine-Frontend
+
 Your mission is to develop an innovative and robust recommendation engine designed to enhance our Technical Accelerators program. At any given time, our team is developing 8-10 new Accelerators while actively delivering up to 600 ongoing projects. The challenge is to develop a way to match customers to the Accelerators they would benefit from the most.
 
 The core objective is to build a recommendation engine that excels in two key areas:
@@ -90,3 +93,53 @@ If you want to deploy your Flask app for production, consider using a WSGI serve
 
 `pip install gunicorn`
 `gunicorn -w 5 -b 0.0.0.0:5000 app:app`
+
+## Certbot is used to obtain the SSL certificate. Install it on your EC2 instance.
+
+1. Install Certbot
+   `sudo apt update -y`
+   `sudo apt install certbot -y`
+   `sudo apt install python3-certbot-nginx`
+
+2. Install Web Server
+   `sudo apt install nginx -y`
+
+3. Start and enable Nginx:
+   `sudo systemctl start nginx`
+   `sudo systemctl enable nginx`
+
+4. Nginx Configuration: Create a new Nginx configuration file for your Flask app:
+
+`sudo nano /etc/nginx/sites-available/flask_app`
+
+5. Add the following content:
+
+`server {
+listen 80;
+server_name courseeventapp.online;
+
+    location / {
+        proxy_pass http://54.196.142.248:5000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+}`
+
+6. Enable the configuration:
+
+`sudo ln -s /etc/nginx/sites-available/flask_app /etc/nginx/sites-enabled/`
+`sudo nginx -t` # Test the configuration
+`sudo systemctl reload nginx` # Reload Nginx
+
+7. Obtain the SSL Certificate: Run the Certbot command to obtain an SSL certificate.
+
+- `sudo certbot --nginx -d your-domain.com -d www.your-domain.com`
+- `sudo certbot --nginx -d courseeventapp.online -d www.courseeventapp.online`
+
+8. Automate Certificate Renewal
+1. Open the crontab:
+   `sudo crontab -e`
+1. Add the following line to renew certificates daily. This runs the renewal process every day at 3:00 AM and reloads Nginx if a certificate is renewed:
+   `0 3 * * * certbot renew --quiet && systemctl reload nginx`
