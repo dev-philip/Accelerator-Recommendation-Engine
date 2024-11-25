@@ -1,0 +1,16 @@
+pandas
+scikit-learn
+matplotlib
+surprise
+jupyterlab
+python-dotenv
+scikit-surprise
+numpy>=1.24
+openpyxl
+langchain
+langchain-community
+langchain-openai
+openai
+Flask
+flask-cors
+anthropic
